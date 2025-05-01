@@ -1,0 +1,42 @@
+def abc(name1, name2):
+    m = len(name1)
+    n = len(name2)
+    
+    dp = [[0] * (n + 1) for _ in range(m + 1)]
+
+    for i in range(m + 1):
+        for j in range(n + 1):
+            if i == 0:
+                dp[i][j] = j
+            elif j == 0:
+                dp[i][j] = i
+            elif name1[i - 1] == name2[j - 1]:
+                dp[i][j] = dp[i - 1][j - 1]
+            else:
+                dp[i][j] = 1 + min(dp[i][j - 1], dp[i - 1][j], dp[i - 1][j - 1])
+    
+    return dp[m][n]
+
+print("FILL THE DATABASE")
+database = []
+
+for i in range(10):
+    database.append(input("Enter item {}: ".format(i + 1)))
+
+name = input("I like: ")
+
+min_dist = float('inf')
+close_word = ""
+
+for i in database:
+    dis = abc(name, i)
+    if dis < min_dist:
+        min_dist = dis
+        close_word = i
+
+if min_dist == 0:
+    print("Good Right Choice")
+elif min_dist<=2:
+    print(f"Did you mean '{close_word}'?")
+else:
+    print("wrong choice")
